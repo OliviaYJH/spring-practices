@@ -11,12 +11,28 @@ import emaillist.vo.EmaillistVo;
 
 @Controller
 public class EmaillistController {
+	// @Autowired // bean을 찾고 세팅해줘
 	private EmaillistRepository emaillistRepository;
+
+	public EmaillistController(EmaillistRepository emaillistRepository) { // 생성자
+		this.emaillistRepository = emaillistRepository;
+	}
 
 	@RequestMapping("/")
 	public String index(Model model) {
 		List<EmaillistVo> list = emaillistRepository.findAll();
 		model.addAttribute("list", list);
 		return "index";
+	}
+
+	@RequestMapping("/form")
+	public String form() {
+		return "form";
+	}
+
+	@RequestMapping("/add")
+	public String add(EmaillistVo vo) {
+		emaillistRepository.insert(vo);
+		return "redirect:/";
 	}
 }
