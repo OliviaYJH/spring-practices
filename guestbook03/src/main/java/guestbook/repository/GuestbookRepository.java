@@ -26,17 +26,17 @@ public class GuestbookRepository {
 		return jdbcContext.queryForList(
 				"select id, name, contents, date_format(reg_date, '%Y-%m-%d %h:%i:%s') from guestbook order by reg_date desc",
 				new RowMapper<GuestbookVo>() {
-
 					@Override
 					public GuestbookVo mapRow(ResultSet rs, int rowNum) throws SQLException {
 						GuestbookVo vo = new GuestbookVo();
+
 						vo.setId(rs.getLong(1));
 						vo.setName(rs.getString(2));
 						vo.setContents(rs.getString(3));
 						vo.setRegDate(rs.getString(4));
+
 						return vo;
 					}
-
 				});
 	}
 
