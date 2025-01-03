@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -9,16 +9,12 @@
 <h1>파일 업로드 예제</h1>
 <form method="post" action="upload" enctype="multipart/form-data">
 
-	<label>email:</label>
-	<input type="text" name="email" value="kickscar@gmail.com">
+	<label for="email">email:</label>
+	<input type="text"id="email" name="email" value="kickscar@gmail.com">
 	<br><br>
 	
-	<label>파일1:</label>
-	<input type="file" name="file1">
-	<br><br>
-	
-	<label>파일2:</label>
-	<input type="file" name="file2">
+	<label for="file">파일:</label>
+	<input type="file" id="file" name="file">
 	<br><br>
 	
 	<br>
