@@ -12,14 +12,14 @@ import javax.sql.DataSource;
 import org.springframework.jdbc.core.RowMapper;
 
 public class JdbcContext {
-	private DataSource dataSource;
+	private final DataSource dataSource;
 
 	public JdbcContext(DataSource dataSource) {
 		this.dataSource = dataSource;
 	}
 
-	public <E> List<E> queryForList(String sql, RowMapper<E> rowMapper) {
-		return queryForListWithStatementStrategy(new StatementStrategy() {
+	public <E> List<E> query(String sql, RowMapper<E> rowMapper) {
+		return queryWithStatementStrategy(new StatementStrategy() {
 
 			@Override
 			public PreparedStatement makeStatement(Connection connection) throws SQLException {
@@ -29,8 +29,23 @@ public class JdbcContext {
 		}, rowMapper);
 	}
 
-	public int executeUpdate(String sql, Object[] parameters) {
-		return executeUpdateWithStatementStrategy(new StatementStrategy() {
+	public <E> E queryForObject(String sql, Object[] parameters, RowMapper<E> rowMapper) {
+		return queryForObjectWithStatementStrategy(new StatementStrategy() {
+
+			@Override
+			public PreparedStatement makeStatement(Connection connection) throws SQLException {
+				PreparedStatement pstmt = connection.prepareStatement(sql);
+				for (int i = 0; i < parameters.length; i++) {
+					pstmt.setObject(i + 1, parameters[i]);
+				}
+				return pstmt;
+			}
+
+		}, rowMapper);
+	}
+
+	public int update(String sql, Object... parameters) {
+		return updateWithStatementStrategy(new StatementStrategy() {
 			@Override
 			public PreparedStatement makeStatement(Connection connection) throws SQLException {
 				PreparedStatement pstmt = connection.prepareStatement(sql);
@@ -44,7 +59,7 @@ public class JdbcContext {
 		});
 	}
 
-	private <E> List<E> queryForListWithStatementStrategy(StatementStrategy statementStrategy, RowMapper<E> rowMapper) {
+	private <E> List<E> queryWithStatementStrategy(StatementStrategy statementStrategy, RowMapper<E> rowMapper) {
 		List<E> result = new ArrayList<>();
 
 		try (Connection conn = dataSource.getConnection();
@@ -55,20 +70,34 @@ public class JdbcContext {
 				result.add(e);
 			}
 		} catch (SQLException e) {
-			System.out.println("error: " + e);
+			throw new RuntimeException(e);
 		}
 
 		return result;
 	}
 
-	private int executeUpdateWithStatementStrategy(StatementStrategy statementStrategy) {
+	private <E> E queryForObjectWithStatementStrategy(StatementStrategy statementStrategy, RowMapper<E> rowMapper) {
+		try (Connection conn = dataSource.getConnection();
+				PreparedStatement pstmt = statementStrategy.makeStatement(conn);
+				ResultSet rs = pstmt.executeQuery();) {
+			if (rs.next()) {
+				return rowMapper.mapRow(rs, rs.getRow());
+			}
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		}
+
+		return null;
+	}
+
+	private int updateWithStatementStrategy(StatementStrategy statementStrategy) {
 		int count = 0;
 
 		try (Connection conn = dataSource.getConnection();
 				PreparedStatement pstmt = statementStrategy.makeStatement(conn);) {
 			count = pstmt.executeUpdate();
 		} catch (SQLException e) {
-			System.out.println("error:" + e);
+			throw new RuntimeException(e);
 		}
 
 		return count;

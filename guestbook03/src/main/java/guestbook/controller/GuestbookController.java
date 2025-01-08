@@ -27,6 +27,7 @@ public class GuestbookController {
 	@RequestMapping("/")
 	public String index(Model model) {
 		List<GuestbookVo> list = guestbookRepository.findAll();
+		
 		model.addAttribute("list", list);
 		return "index";
 	}
