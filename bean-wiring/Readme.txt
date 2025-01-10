@@ -43,7 +43,7 @@
     config.videosystem
        |--- DVDPlayerJavaConfigTest.java
        |--- DVDPlayerXmlConfigTest.java
+       
     config.videosystem.mixing
-    
        |--- DVDPlayerMixingConfigTest01.java
        |--- DVDPlayerMixingConfigTest02.java
