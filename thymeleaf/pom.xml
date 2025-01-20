@@ -49,35 +49,39 @@
 			<version>${thymeleaf.version}</version>
 		</dependency>
 
-
 		<!-- jackson -->
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-databind</artifactId>
 			<version>${jackson-databind.version}</version>
 		</dependency>
+		
 		<!-- validation -->
 		<dependency>
 			<groupId>org.hibernate.validator</groupId>
 			<artifactId>hibernate-validator</artifactId>
 			<version>${hibernate-validator.version}</version>
 		</dependency>
+		
 		<!-- jstl/el -->
 		<dependency>
 			<groupId>jakarta.el</groupId>
 			<artifactId>jakarta.el-api</artifactId>
 			<version>${jakarta-el-api.version}</version>
 		</dependency>
+		
 		<dependency>
 			<groupId>jakarta.servlet.jsp.jstl</groupId>
 			<artifactId>jakarta.servlet.jsp.jstl-api</artifactId>
 			<version>${jakarta-jstl-api.version}</version>
 		</dependency>
+		
 		<dependency>
 			<groupId>org.glassfish.web</groupId>
 			<artifactId>jakarta.servlet.jsp.jstl</artifactId>
 			<version>${jakarta-jstl.version}</version>
 		</dependency>
+		
 		<!-- servlet api -->
 		<dependency>
 			<groupId>jakarta.servlet</groupId>
@@ -85,6 +89,7 @@
 			<version>${jakarta-servlet-api.version}</version>
 			<scope>provided</scope>
 		</dependency>
+		
 		<!-- jsp api -->
 		<dependency>
 			<groupId>jakarta.servlet.jsp</groupId>
